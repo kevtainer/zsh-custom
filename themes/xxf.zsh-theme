@@ -11,6 +11,14 @@ function box_name {
     [ -f ~/.box-name ] && cat ~/.box-name || echo $HOST
 }
 
+# aws profile
+local aws_prof_info='$(aws_prof)'
+function aws_prof {
+  local profile="${AWS_PROFILE:=default}"
+
+  echo "%{$fg_bold[blue]%}aws:(%{$fg[yellow]%}${profile}%{$fg_bold[blue]%})%{$reset_color%} "
+}
+
 # Directory info.
 local current_dir='${PWD/#$HOME/~}'
 
@@ -37,9 +45,6 @@ function f_git_last_commit(){
 	fi
 }
 
-
-
-
 # HG info
 local hg_info='$(ys_hg_prompt_info)'
 ys_hg_prompt_info() {
@@ -58,6 +63,7 @@ ys_hg_prompt_info() {
 
 # Prompt format: \n # TIME USER at MACHINE in [DIRECTORY] on git:BRANCH STATE \n $ 
 PROMPT="
+${aws_prof_info}
 %{$fg[cyan]%}%n \
 %{$fg[white]%}at \
 %{$fg[green]%}$(box_name) \
